@@ -12,19 +12,17 @@ class MealCard extends StatelessWidget {
     return Card(
       elevation: 9.0,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(30),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(meal.description),
-                Text(meal.calories.toString()),
-                Text(
-                  formatDateTime(meal.dateTime),
-                ),
+                Text("${meal.calories} kcal"),
+                Text(formatDateTime(meal.dateTime)),
               ],
-            )
+            ),
           ],
         ),
       ),

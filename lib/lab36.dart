@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab36/data/meals_data.dart';
 import 'package:lab36/models/destination.dart';
 import 'package:lab36/models/meal.dart';
 import 'package:lab36/screens/main_screen.dart';
@@ -16,12 +17,24 @@ class Lab36 extends StatefulWidget {
 
 class _Lab36State extends State<Lab36> {
   int currentScreenIndex = 0;
-  List<Meal> meals = [
-    Meal(description: 'Plov', dateTime: DateTime.now(), calories: 500),
-  ];
+  double calories = 2000;
+  List<Meal> meals = [];
   void updateIndex(int index) {
     setState(() {
       currentScreenIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    final loadedMeals = await loadMeals();
+    setState(() {
+      meals = loadedMeals;
     });
   }
 
@@ -29,6 +42,14 @@ class _Lab36State extends State<Lab36> {
     setState(() {
       meals.add(newMeal);
     });
+    saveMeal(meals);
+  }
+
+  void deleteMeal(String id) {
+    setState(() {
+      meals.removeWhere((meal) => meal.id == id);
+    });
+    saveMeal(meals);
   }
 
   void openMealBottomSheet() {
@@ -44,7 +65,7 @@ class _Lab36State extends State<Lab36> {
     return [
       Destination(
         screenTitle: Text('Home '),
-        screen: MainScreen(),
+        screen: MainScreen(meals: meals),
         navLabel: "Home",
         navIcon: Icons.home_outlined,
         navSelectedIcon: Icons.home,
@@ -54,7 +75,7 @@ class _Lab36State extends State<Lab36> {
       ),
       Destination(
         screenTitle: Text('History '),
-        screen: HistoryScreen(meals: meals),
+        screen: HistoryScreen(meals: meals, onMealDelete: deleteMeal),
         navLabel: "Story ",
         navIcon: Icons.history_outlined,
         navSelectedIcon: Icons.history,
@@ -64,7 +85,7 @@ class _Lab36State extends State<Lab36> {
       ),
       Destination(
         screenTitle: Text('Settings '),
-        screen: SettingsScreen(),
+        screen: SettingsScreen(calories: calories),
         navLabel: "Setting ",
         navIcon: Icons.settings_outlined,
         navSelectedIcon: Icons.settings,
