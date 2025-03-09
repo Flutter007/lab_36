@@ -1,23 +1,26 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:lab36/models/meal.dart';
+import 'package:lab36/helpers/format_datetime.dart';
+import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
 
 class StatisticChart1 extends StatelessWidget {
-  final List<Meal> meals;
+  final List<MealExpense> meals;
   const StatisticChart1({super.key, required this.meals});
 
   @override
   Widget build(BuildContext context) {
     Widget getTitles(double value, TitleMeta meta) {
       String txt = value.toInt().toString();
-
+      for (var expense in meals) {
+        if (expense.dateTime.day == value.toInt()) {
+          txt = '${zeroPad(expense.dateTime.day)}.${expense.dateTime.month}';
+          break;
+        }
+      }
       return Text(
         txt,
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
       );
     }
 
@@ -33,9 +36,7 @@ class StatisticChart1 extends StatelessWidget {
       ) {
         return BarTooltipItem(
           rod.toY.round().toString(),
-          TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          TextStyle(fontWeight: FontWeight.bold),
         );
       },
     );
@@ -49,50 +50,40 @@ class StatisticChart1 extends StatelessWidget {
           getTitlesWidget: getTitles,
         ),
       ),
-      leftTitles: const AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
-      ),
-      topTitles: const AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
-      ),
-      rightTitles: const AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
-      ),
+      leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
     );
     LinearGradient barsGradient = LinearGradient(
-      colors: [
-        Colors.blue.shade800,
-        Colors.blue.shade300,
-      ],
+      colors: [Colors.purpleAccent.shade700, Colors.blue.shade100],
       begin: Alignment.centerRight,
-      end: Alignment.bottomRight,
+      end: Alignment.bottomLeft,
     );
 
     return StatisticsCard(
       child: Container(
-        height: 300,
-        padding: EdgeInsets.symmetric(vertical: 14),
+        height: 230,
+        padding: EdgeInsets.symmetric(vertical: 12),
         margin: EdgeInsets.only(top: 10),
         child: BarChart(
           BarChartData(
-            barTouchData: BarTouchData(
-              touchTooltipData: getToolLipData,
-            ),
-            barGroups: meals
-                .map(
-                  (expense) => BarChartGroupData(
-                    x: expense.dateTime.day,
-                    showingTooltipIndicators: [0],
-                    barRods: [
-                      BarChartRodData(
-                        gradient: barsGradient,
-                        toY: 2,
-                        width: 12,
+            barTouchData: BarTouchData(touchTooltipData: getToolLipData),
+            barGroups:
+                meals
+                    .map(
+                      (expense) => BarChartGroupData(
+                        x: expense.dateTime.day,
+                        showingTooltipIndicators: [0],
+                        barRods: [
+                          BarChartRodData(
+                            gradient: barsGradient,
+                            toY: (expense.calories ?? 0).toDouble(),
+                            width: 12,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-                .toList(),
+                    )
+                    .toList(),
             titlesData: titlesData,
             borderData: FlBorderData(show: false),
             gridData: FlGridData(show: false),

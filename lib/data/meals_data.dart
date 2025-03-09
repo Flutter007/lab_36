@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:lab36/models/meal.dart';
-
 import '../helpers/get_data_file_path.dart';
 
 Future<void> saveMeal(List<Meal> meals) async {

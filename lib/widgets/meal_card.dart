@@ -18,9 +18,9 @@ class MealCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(meal.description),
-                Text("${meal.calories} kcal"),
-                Text(formatDateTime(meal.dateTime)),
+                Expanded(child: Text(meal.description)),
+                Expanded(child: Text("${meal.calories} kcal")),
+                Expanded(child: Text(formatDateTime(meal.dateTime))),
               ],
             ),
           ],

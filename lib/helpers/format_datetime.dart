@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String _zeroPad(int dateTimeValue) {
+String zeroPad(int dateTimeValue) {
   if (dateTimeValue < 10) {
     return '0$dateTimeValue';
   }
@@ -8,15 +8,15 @@ String _zeroPad(int dateTimeValue) {
 }
 
 String formatDate(DateTime dateTime) {
-  final day = _zeroPad(dateTime.day);
-  final month = _zeroPad(dateTime.month);
-  final year = _zeroPad(dateTime.year);
+  final day = zeroPad(dateTime.day);
+  final month = zeroPad(dateTime.month);
+  final year = zeroPad(dateTime.year);
   return '$day.$month.$year';
 }
 
 String formatTime(TimeOfDay time) {
-  final hour = _zeroPad(time.hour);
-  final minutes = _zeroPad(time.minute);
+  final hour = zeroPad(time.hour);
+  final minutes = zeroPad(time.minute);
   return '$hour:$minutes';
 }
 
