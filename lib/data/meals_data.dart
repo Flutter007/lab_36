@@ -17,6 +17,7 @@ Future<void> saveMeal(List<Meal> meals) async {
             },
           )
           .toList();
+
   final mealsJson = jsonEncode(mealsMap);
   await file.writeAsString(mealsJson);
 }

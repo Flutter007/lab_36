@@ -3,9 +3,16 @@ import 'package:lab36/helpers/format_datetime.dart';
 import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
 
+import '../../models/calorie_max.dart';
+
 class StatisticHorizontalChart extends StatefulWidget {
   final MealExpense expense;
-  const StatisticHorizontalChart({super.key, required this.expense});
+  final CalorieMax calorie;
+  const StatisticHorizontalChart({
+    super.key,
+    required this.expense,
+    required this.calorie,
+  });
 
   @override
   State<StatisticHorizontalChart> createState() =>
@@ -15,8 +22,8 @@ class StatisticHorizontalChart extends StatefulWidget {
 class _StatisticHorizontalChartState extends State<StatisticHorizontalChart> {
   @override
   Widget build(BuildContext context) {
-    bool isMoreThanNorma = (widget.expense.calories! > 2000);
-    double percentage = (widget.expense.calories!) / 2000;
+    bool isMoreThanNorma = widget.expense.calories! > widget.calorie.calories!;
+    double percentage = (widget.expense.calories!) / widget.calorie.calories!;
 
     return StatisticsCard(
       child: Column(

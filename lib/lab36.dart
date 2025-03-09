@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lab36/data/meals_data.dart';
+import 'package:lab36/models/calorie_max.dart';
 import 'package:lab36/models/destination.dart';
 import 'package:lab36/models/meal.dart';
 import 'package:lab36/screens/main_screen.dart';
 import 'package:lab36/screens/settings_screen.dart';
 import 'package:lab36/widgets/meal_add.dart';
 
+import 'data/calorie_data.dart';
 import 'screens/history_screen.dart';
 
 class Lab36 extends StatefulWidget {
@@ -17,24 +19,40 @@ class Lab36 extends StatefulWidget {
 
 class _Lab36State extends State<Lab36> {
   int currentScreenIndex = 0;
-  double calories = 2000;
+  CalorieMax? calories;
   List<Meal> meals = [];
+
   void updateIndex(int index) {
     setState(() {
       currentScreenIndex = index;
     });
   }
 
+  void updateCalories(CalorieMax newCalories) {
+    setState(() {
+      calories = newCalories;
+    });
+    saveCalorie(calories!);
+  }
+
   @override
   void initState() {
     super.initState();
     loadData();
+    loadCalories();
   }
 
   void loadData() async {
     final loadedMeals = await loadMeals();
     setState(() {
       meals = loadedMeals;
+    });
+  }
+
+  void loadCalories() async {
+    final loadedCalories = await loadCalorie();
+    setState(() {
+      calories = loadedCalories;
     });
   }
 
@@ -65,7 +83,10 @@ class _Lab36State extends State<Lab36> {
     return [
       Destination(
         screenTitle: Text('Home '),
-        screen: MainScreen(meals: meals),
+        screen: MainScreen(
+          meals: meals,
+          calorie: calories ?? CalorieMax(calories: 2000),
+        ),
         navLabel: "Home",
         navIcon: Icons.home_outlined,
         navSelectedIcon: Icons.home,
@@ -85,7 +106,10 @@ class _Lab36State extends State<Lab36> {
       ),
       Destination(
         screenTitle: Text('Settings '),
-        screen: SettingsScreen(calories: calories),
+        screen: SettingsScreen(
+          calories: calories ?? CalorieMax(calories: 2000),
+          updateCalories: updateCalories,
+        ),
         navLabel: "Setting ",
         navIcon: Icons.settings_outlined,
         navSelectedIcon: Icons.settings,

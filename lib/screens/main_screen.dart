@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab36/models/calorie_max.dart';
 import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
 
@@ -8,7 +9,8 @@ import '../widgets/statistics/statistic_horizontal_chart.dart';
 
 class MainScreen extends StatelessWidget {
   final List<Meal> meals;
-  const MainScreen({super.key, required this.meals});
+  final CalorieMax calorie;
+  const MainScreen({super.key, required this.meals, required this.calorie});
 
   List<MealExpense> get mealExpenses {
     final List<MealExpense> mealExpenses = [];
@@ -46,12 +48,12 @@ class MainScreen extends StatelessWidget {
       children: [
         StatisticsCard(
           child: Text(
-            "Total calories:\n$allCalories kcal",
+            "Total calories:\n$allCalories kcal/${calorie.calories}",
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         StatisticChart1(meals: mealExpenses),
-        StatisticHorizontalChart(expense: mealExpenses[6]),
+        StatisticHorizontalChart(expense: mealExpenses[6], calorie: calorie),
       ],
     );
   }
