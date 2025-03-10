@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lab36/models/meal.dart';
 
 import '../helpers/format_datetime.dart';
+import '../theme/colors.dart';
 
 class MealAdd extends StatefulWidget {
   final void Function(Meal newMeal) addMeal;
@@ -72,7 +73,7 @@ class _MealAddState extends State<MealAdd> {
       id: widget.existingMeal?.id,
       description: titleController.text.trim(),
       dateTime: dateTime,
-      calories: double.tryParse(caloriesController.text)!,
+      calories: int.tryParse(caloriesController.text)!,
     );
     widget.addMeal(addMeal);
     Navigator.pop(context);
@@ -113,7 +114,7 @@ class _MealAddState extends State<MealAdd> {
   @override
   Widget build(BuildContext context) {
     final bottomInsets = MediaQuery.of(context).viewInsets.bottom;
-
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.fromLTRB(24, 24, 24, 24 + bottomInsets),
@@ -125,6 +126,9 @@ class _MealAddState extends State<MealAdd> {
               children: [
                 Expanded(
                   child: TextField(
+                    style: TextStyle(
+                      color: customColor.bottomNavBarSelectedColor,
+                    ),
                     onTap: onDateTap,
                     readOnly: true,
                     controller: dateController,
@@ -137,6 +141,9 @@ class _MealAddState extends State<MealAdd> {
                 SizedBox(width: 10),
                 Expanded(
                   child: TextField(
+                    style: TextStyle(
+                      color: customColor.bottomNavBarSelectedColor,
+                    ),
                     onTap: onTimeTap,
                     readOnly: true,
                     controller: timeController,
@@ -150,6 +157,7 @@ class _MealAddState extends State<MealAdd> {
             ),
             SizedBox(height: 10),
             TextField(
+              style: TextStyle(color: customColor.bottomNavBarSelectedColor),
               controller: titleController,
               decoration: const InputDecoration(
                 labelText: 'Title of meal',
@@ -158,8 +166,9 @@ class _MealAddState extends State<MealAdd> {
             ),
             SizedBox(height: 10),
             TextField(
+              style: TextStyle(color: customColor.bottomNavBarSelectedColor),
               controller: caloriesController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 suffix: Text("kcal"),
 
@@ -179,8 +188,16 @@ class _MealAddState extends State<MealAdd> {
                 SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: customColor.greenShade,
+                    ),
                     onPressed: isMealValid() ? null : onSave,
-                    child: Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        color: customColor.bottomNavBarSelectedColor,
+                      ),
+                    ),
                   ),
                 ),
               ],

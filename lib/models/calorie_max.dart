@@ -1,5 +1,5 @@
 class CalorieMax {
-  final double? calories;
+  final int? calories;
 
   CalorieMax({required this.calories});
 }

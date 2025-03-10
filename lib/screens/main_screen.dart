@@ -4,6 +4,7 @@ import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
 
 import '../models/meal.dart';
+import '../theme/colors.dart';
 import '../widgets/statistics/statistic_barchart.dart';
 import '../widgets/statistics/statistic_horizontal_chart.dart';
 
@@ -18,7 +19,7 @@ class MainScreen extends StatelessWidget {
     final now = DateTime.now();
     for (var i = 0; i < 7; i++) {
       final date = now.subtract(Duration(days: i));
-      double totalCalories = 0;
+      int totalCalories = 0;
       for (var meal in meals) {
         if (meal.dateTime.day == date.day &&
             meal.dateTime.month == date.month) {
@@ -33,8 +34,8 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late double? allCalories;
-
+    late int? allCalories;
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     for (var meal in mealExpenses) {
       if (meal.dateTime.day == DateTime.now().day &&
           meal.dateTime.month == DateTime.now().month) {
@@ -48,8 +49,10 @@ class MainScreen extends StatelessWidget {
       children: [
         StatisticsCard(
           child: Text(
-            "Total calories:\n$allCalories kcal/${calorie.calories}",
-            style: Theme.of(context).textTheme.titleLarge,
+            "Total calories:\n$allCalories/${calorie.calories} kcal",
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge!.copyWith(color: customColor.cardTextColor),
           ),
         ),
         StatisticChart1(meals: mealExpenses),

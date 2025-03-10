@@ -6,7 +6,7 @@ class Meal {
   final String id;
   final String description;
   final DateTime dateTime;
-  final double calories;
+  final int calories;
 
   Meal({
     String? id,

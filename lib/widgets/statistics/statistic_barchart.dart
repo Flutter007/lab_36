@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lab36/helpers/format_datetime.dart';
 import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
+import '../../theme/colors.dart';
 
 class StatisticChart1 extends StatelessWidget {
   final List<MealExpense> meals;
@@ -10,6 +11,7 @@ class StatisticChart1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     Widget getTitles(double value, TitleMeta meta) {
       String txt = value.toInt().toString();
       for (var expense in meals) {
@@ -20,7 +22,11 @@ class StatisticChart1 extends StatelessWidget {
       }
       return Text(
         txt,
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+          color: customColor.cardTextColor,
+        ),
       );
     }
 
@@ -36,7 +42,10 @@ class StatisticChart1 extends StatelessWidget {
       ) {
         return BarTooltipItem(
           rod.toY.round().toString(),
-          TextStyle(fontWeight: FontWeight.bold),
+          TextStyle(
+            fontWeight: FontWeight.bold,
+            color: customColor.cardTextColor,
+          ),
         );
       },
     );
@@ -55,7 +64,7 @@ class StatisticChart1 extends StatelessWidget {
       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
     );
     LinearGradient barsGradient = LinearGradient(
-      colors: [Colors.purpleAccent.shade700, Colors.blue.shade100],
+      colors: [Colors.pink.shade400, Colors.blue.shade300],
       begin: Alignment.centerRight,
       end: Alignment.bottomLeft,
     );

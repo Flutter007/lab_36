@@ -3,6 +3,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lab36/models/meal.dart';
 import 'package:lab36/widgets/meal_card.dart';
 
+import '../theme/colors.dart';
+
 class HistoryScreen extends StatelessWidget {
   final List<Meal> meals;
   final void Function(String id) onMealDelete;
@@ -14,10 +16,10 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     return ListView.builder(
       itemBuilder: (ctx, index) {
         final meal = meals[index];
-
         return Slidable(
           endActionPane: ActionPane(
             motion: BehindMotion(),
@@ -25,7 +27,7 @@ class HistoryScreen extends StatelessWidget {
               SlidableAction(
                 icon: Icons.delete,
                 label: "Delete",
-                backgroundColor: Theme.of(context).colorScheme.error,
+                backgroundColor: customColor.redShade,
                 padding: EdgeInsets.zero,
                 onPressed: (ctx) => onMealDelete(meal.id),
               ),

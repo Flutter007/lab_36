@@ -5,6 +5,7 @@ import 'package:lab36/models/destination.dart';
 import 'package:lab36/models/meal.dart';
 import 'package:lab36/screens/main_screen.dart';
 import 'package:lab36/screens/settings_screen.dart';
+import 'package:lab36/theme/colors.dart';
 import 'package:lab36/widgets/meal_add.dart';
 
 import 'data/calorie_data.dart';
@@ -80,6 +81,7 @@ class _Lab36State extends State<Lab36> {
   }
 
   List<Destination> get destinations {
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     return [
       Destination(
         screenTitle: Text('Home '),
@@ -91,7 +93,14 @@ class _Lab36State extends State<Lab36> {
         navIcon: Icons.home_outlined,
         navSelectedIcon: Icons.home,
         appBarActions: [
-          IconButton(onPressed: openMealBottomSheet, icon: Icon(Icons.add)),
+          IconButton(
+            onPressed: openMealBottomSheet,
+            icon: Icon(
+              Icons.add,
+              size: 40,
+              color: customColor.bottomNavBarSelectedColor,
+            ),
+          ),
         ],
       ),
       Destination(
@@ -101,7 +110,14 @@ class _Lab36State extends State<Lab36> {
         navIcon: Icons.history_outlined,
         navSelectedIcon: Icons.history,
         appBarActions: [
-          IconButton(onPressed: openMealBottomSheet, icon: Icon(Icons.add)),
+          IconButton(
+            onPressed: openMealBottomSheet,
+            icon: Icon(
+              Icons.add,
+              size: 40,
+              color: customColor.bottomNavBarSelectedColor,
+            ),
+          ),
         ],
       ),
       Destination(
@@ -114,7 +130,14 @@ class _Lab36State extends State<Lab36> {
         navIcon: Icons.settings_outlined,
         navSelectedIcon: Icons.settings,
         appBarActions: [
-          IconButton(onPressed: openMealBottomSheet, icon: Icon(Icons.add)),
+          IconButton(
+            onPressed: openMealBottomSheet,
+            icon: Icon(
+              Icons.add,
+              size: 40,
+              color: customColor.bottomNavBarSelectedColor,
+            ),
+          ),
         ],
       ),
     ];
@@ -123,6 +146,7 @@ class _Lab36State extends State<Lab36> {
   @override
   Widget build(BuildContext context) {
     final destination = destinations[currentScreenIndex];
+    final customColor = Theme.of(context).extension<CustomColor>()!;
     return Scaffold(
       appBar: AppBar(
         title: destination.screenTitle,
@@ -130,13 +154,22 @@ class _Lab36State extends State<Lab36> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentScreenIndex,
+        indicatorColor: customColor.bottomNavBarSelectedColor,
         onDestinationSelected: updateIndex,
         destinations:
             destinations
                 .map(
                   (destination) => NavigationDestination(
-                    icon: Icon(destination.navIcon),
-                    selectedIcon: Icon(destination.navSelectedIcon),
+                    icon: Icon(
+                      destination.navIcon,
+                      size: 30,
+                      color: customColor.bottomNavBarSelectedColor,
+                    ),
+                    selectedIcon: Icon(
+                      destination.navSelectedIcon,
+                      size: 25,
+                      color: customColor.iconColor,
+                    ),
                     label: destination.navLabel,
                   ),
                 )

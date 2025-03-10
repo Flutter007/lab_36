@@ -4,6 +4,7 @@ import 'package:lab36/models/meal_expense.dart';
 import 'package:lab36/widgets/statistics/statistics_card.dart';
 
 import '../../models/calorie_max.dart';
+import '../../theme/colors.dart';
 
 class StatisticHorizontalChart extends StatefulWidget {
   final MealExpense expense;
@@ -23,13 +24,21 @@ class _StatisticHorizontalChartState extends State<StatisticHorizontalChart> {
   @override
   Widget build(BuildContext context) {
     bool isMoreThanNorma = widget.expense.calories! > widget.calorie.calories!;
-    double percentage = (widget.expense.calories!) / widget.calorie.calories!;
-
+    double percent = (widget.expense.calories!) / widget.calorie.calories!;
+    final customColor = Theme.of(context).extension<CustomColor>()!;
+    final titleMedium = Theme.of(
+      context,
+    ).textTheme.titleMedium!.copyWith(color: customColor.cardTextColor);
     return StatisticsCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Кол-во калорий за ${formatDate(widget.expense.dateTime)}"),
+          Text(
+            "Amount of calories for ${formatDate(widget.expense.dateTime)}",
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge!.copyWith(color: customColor.cardTextColor),
+          ),
           SizedBox(height: 10),
           Stack(
             children: [
@@ -43,19 +52,19 @@ class _StatisticHorizontalChartState extends State<StatisticHorizontalChart> {
               ),
               Container(
                 height: 20,
-                width: MediaQuery.of(context).size.width * percentage,
+                width: MediaQuery.of(context).size.width * percent,
                 decoration: BoxDecoration(
-                  color: isMoreThanNorma ? Colors.red : Colors.green,
+                  color:
+                      isMoreThanNorma
+                          ? customColor.redShade
+                          : customColor.greenShade,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
                   child: Text(
-                    "${widget.expense.calories} ккал",
+                    "${widget.expense.calories} kcal",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: titleMedium,
                   ),
                 ),
               ),

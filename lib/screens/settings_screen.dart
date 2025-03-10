@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lab36/models/calorie_max.dart';
+import 'package:lab36/theme/colors.dart';
+import 'package:lab36/widgets/statistics/statistics_card.dart';
+
+import '../theme/dark_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
   final CalorieMax calories;
@@ -25,31 +29,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(24),
-      child: Column(
-        children: [
-          TextField(
-            keyboardType: TextInputType.number,
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: 'Entry calories per day',
-              border: OutlineInputBorder(),
-              suffix: Text("kcal"),
+    final customColor = Theme.of(context).extension<CustomColor>()!;
+    final borderColor = borderStyle(customColor.cardTextColor);
+    final txtColor = customColor.cardTextColor;
+    return StatisticsCard(
+      child: Container(
+        color: customColor.cardBackgroundColor,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              style: TextStyle(color: txtColor),
+              keyboardType: TextInputType.number,
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'Entry calories per day',
+                labelStyle: TextStyle(color: txtColor),
+                enabledBorder: borderColor,
+                focusedBorder: borderColor,
+                disabledBorder: borderColor,
+                suffix: Text("kcal", style: TextStyle(color: txtColor)),
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              widget.updateCalories(
-                CalorieMax(calories: double.parse(controller.text)),
-              );
-              FocusScope.of(context).unfocus();
-            },
-            child: Text("Save"),
-          ),
-        ],
+            TextButton(
+              onPressed: () {
+                widget.updateCalories(
+                  CalorieMax(calories: int.parse(controller.text)),
+                );
+                FocusScope.of(context).unfocus();
+              },
+              child: Text("Save", style: TextStyle(color: txtColor)),
+            ),
+          ],
+        ),
       ),
     );
   }
